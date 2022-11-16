@@ -13,10 +13,11 @@ async function getById (idProduct) {
   return Product.findById(idProduct)
 }
 
-async function addProduct (newProduct, userCurrent) {
-  const productCreated = await Product.create({ ...newProduct, author: userCurrent })
+function addProduct (newProduct, file) {
+  const {location, key} = file
+  const productCreated = {...newProduct, image: location, keyImage:key, price: Number(newProduct.price) }
   
-  return productCreated
+  return Product.create(productCreated)
 }
 
 async function deleteById (idProduct) {

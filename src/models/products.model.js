@@ -10,6 +10,9 @@ const productSchema = new mongoose.Schema({
   image: {
     type: String,
   },
+  keyImage:{
+    type:String
+  }
 })
 
 const Product = mongoose.model('products', productSchema)

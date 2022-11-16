@@ -1,7 +1,8 @@
 import express from 'express'
-import jwt_decode from 'jwt-decode'
-import * as productUseCase from '../useCases/products.use.js'
+import * as productsUsesCases from '../useCases/products.use.js'
 const router = express.Router()
+import {StatusHttp} from '../libs/statusHttp.js'
+import {upload} from '../middlewares/multer.js'
 
 // GET /Products
 router.get('/', async (request, response, next) => {
@@ -39,23 +40,24 @@ router.get('/:id', async (request, response, next) => {
 })
 
 // POST /Products
-router.post('/', async (request, response, next) => {
+router.post('/', upload.single('image'), async (request, response, next) => {
   try {
-    const { body: product } = request
-    const token = request.headers.authorization
-    const { id } = jwt_decode(token)
-    console.log(id)
-    const newProduct = await productUseCase.addProduct(product, id)
+      // request.file
+      const {body, file} = request
+      console.log(file)
+      console.log(body)
 
-    console.log(newProduct)
-    response.json({
-      success: true,
-      message: 'Product published',
-      data: newProduct
-    })
+      const productCreated = await productsUsesCases.addProduct(body, file)
+
+      response.json({
+          success: true,
+          message: 'product created successfully - test',
+          data: {
+              product: productCreated
+          }
+      })
   } catch (error) {
-    console.log(error)
-    next(error)
+      next(new StatusHttp(error.message, error.status, error.name))
   }
 })
 
