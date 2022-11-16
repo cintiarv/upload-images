@@ -1,5 +1,5 @@
 import { StatusHttp } from '../libs/statusHttp.js'
-import { Product } from '../models/product.model.js'
+import { Product } from '../models/products.model.js'
 
 async function getAll () {
   return Product.find({})
@@ -13,7 +13,7 @@ async function getById (idProduct) {
   return Product.findById(idProduct)
 }
 
-async function addPRoduct (newProduct, userCurrent) {
+async function addProduct (newProduct, userCurrent) {
   const productCreated = await Product.create({ ...newProduct, author: userCurrent })
   
   return productCreated
