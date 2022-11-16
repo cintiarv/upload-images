@@ -1,6 +1,5 @@
 import { StatusHttp } from '../libs/statusHttp.js'
 import { Product } from '../models/product.model.js'
-import { Post } from '../models/posts.model.js'
 
 async function getAll () {
   return Product.find({})
