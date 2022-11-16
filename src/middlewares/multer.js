@@ -15,5 +15,13 @@ const S3Client = new S3Client(config.s3)
 
 const multers3Config = multerS3({
     s: S3Client,
-    bucket: config.s3.params.Bucket
+    bucket: config.s3.params.Bucket,
+    metdata: function(req, file, cb) {
+        cb(null, {fieldName: file.originalname})
+    },
+    key: function (req, file, cb){
+        cb(null, `${new Date().getTime()}-${file.originalname}`)
+    }
 })
+
+export const upload = multer({storage: multers3Config})
